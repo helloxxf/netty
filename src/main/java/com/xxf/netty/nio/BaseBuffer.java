@@ -2,6 +2,7 @@ package com.xxf.netty.nio;
 
 import java.nio.IntBuffer;
 
+//buffer
 public class BaseBuffer {
 
     public static void main(String[] args) {

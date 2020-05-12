@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 
+//客户端
 public class BioClient {
 
     public static void main(String[] args) throws IOException {

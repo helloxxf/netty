@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+//服务端
 public class BioServer {
     public static void main(String[] args) throws IOException {
         //创建一个线程池
