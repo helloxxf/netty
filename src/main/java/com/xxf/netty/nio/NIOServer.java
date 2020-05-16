@@ -23,6 +23,9 @@ public class NIOServer {
         serverSocketChannel.configureBlocking(false);
         //把serverSocketChannel注册到Selector并关心OP_ACCEPT事件
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+
+        System.out.println("客户端连接后，注册到selectKey数量：" + selector.keys().size());
+
         //循环等待客户端连接
         while (true) {
             if (selector.select(1000) == 0) { //没有事件发生
@@ -36,6 +39,9 @@ public class NIOServer {
              * 3、通过selectionKeys获取通道
              */
             Set<SelectionKey> selectionKeys = selector.selectedKeys();
+
+            //有事件发生的selectKey数量
+            System.out.println("selectKeys 数量：" + selectionKeys.size());
             //使用迭代器遍历Set<SelectionKey>
             Iterator<SelectionKey> iterator = selectionKeys.iterator();
             while (iterator.hasNext()) {
