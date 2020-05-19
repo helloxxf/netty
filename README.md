@@ -84,3 +84,32 @@ NIO的通道类似于流，但有些区别：
 2）mmap需要4次上下文切换，3次数据拷贝；sendFile需要3次山下文切换，最少两次数据拷贝。
 3）sendFile可以利用DMA方式，减少cpu拷贝，mmap则不能（必须从内核拷贝到socket缓冲区）
 ```
+
+## 9、AIO
+
+```
+1）在进行I/0 编程中,常用到两种模式：Reactor 和 Proactor。 Java 的NIO 就是Rector,当有事件触发时，服务器端得到通知，进行相应处理
+2）AIO 即NIO2.0,叫做异步不阻塞IO。AIO引入异步通道概念，采用Proactor模式，简化了程序编写，有效的请求才启动线程，它的特点是先由操作系统
+    完成后才通知服务端程序启动线程去处理，一般适用于连接数较多且连接时间较长的应用。
+3）目前AIO还没有广泛的得到应用，Netty是基于NIO,而不是AIO。
+```
+
+## 10、原生NIO存在问题
+```
+1）NIO类库和API复杂，使用麻烦：需要熟练掌握Selector、ServerSocketChannel、SocketChannel、ByteBuffer;
+2)需要熟悉多线程，NIO涉及到Reactor模式，需要多线程和网络编程很熟悉才能写出高质量的NIO.
+3)开发工作量和难度都很大：例如客户端面临断联重连，网络闪断、半包读写、失败缓存、网络拥塞异常流大处理等。
+4）JDK NIO的BUG:例如Epoll Bug,会导致Selector空轮询，最终导致CPU 100%.
+```
+## 11、Reactor核心组成
+```
+1）Reactor: Reactor在一个单独的线程中运行，负责监听和分发事件，分发给适当的处理程序来对IO事件作出相应
+2）Handlers：处理程序执行I/O事件要完成的实际事件,类似于客户想要与之交谈的公司中的事件人员。Reactor 通过调度
+            适当的处理来响应I/O事件，处理程序执行非阻塞操作。
+```
+## 12、Reactor分类
+```
+1）单Reactor 单线程
+2）单Reactor 多线程
+3）主从Reactor 多线程
+```
