@@ -113,3 +113,22 @@ NIO的通道类似于流，但有些区别：
 2）单Reactor 多线程
 3）主从Reactor 多线程
 ```
+## 12、Netty模型
+```
+简易版：Netty主要基于主从Reactors 多线程模型做了一定改进，其中主从Reactor多线程模型有多个Reactor。
+工作原理： 1)Netty抽象出两组线程池BossGroup专门负责接收客户端的连接，WorkerGroup朱门负责网络的读写。
+          2)BossGroup和WorkGroup类型都是NIoEventLoopGroup
+          3)NIoEventLoopGroup相当于一个事件循环组，这个组中包含有多个事件循环，每一个事件循环是NioEventLoop
+          4)NIOEventLoop表示一个不断循环的执行处理任务的线程。每个NIOEventLoop都有一个Selector,用于监听绑定在其上的socket的网络通讯。
+          5)NIoEventLoopGroup可以有多个线程，既可以含有多个NIOEventLoop。
+          6)每个Boss NIoEventLoop 循环执行步骤：
+            1、轮询accept事件
+            2、处理accept事件，与client建立连接，生成NIOSocketChannel,并将其注册到worker NIOEventLoop的selector
+            3、处理任务队列的任务，即runAllTasks
+          7)每个Worker NIOEventLoop 循环执行步骤
+            1、轮询read,write事件
+            2、处理I/O事件，即read/write,在对应的NIOSocketChannel进行处理
+            3、处理任务队列的任务，即runAllTasks
+          8)每个Worker NIOEventLoop 处理业务时，会使用pipeline(管道），pipeline中包含了channel，即通过pipeline可以通过
+            获取对应的管道；管道中维护了很多处理器
+```
